@@ -72,15 +72,20 @@ summary
 <!-- create a function called data_summary -->
 
 ```{r}
-data_summary <- function(df, measure, group) { chaff %>% group_by(sex) %>%
-  summarise(mean = mean(mass),
-            n = length(sex),
-            sdev = sd(mass),
+data_summary <- function(df, measure, group) { df %>% group_by({{group}}) %>%
+  summarise(mean = mean({{measure}}),
+            n = length({{group}}),
+            sdev = sd({{measure}}),
             serror = sdev/sqrt(n))
 }
 
-data_summary(df, measure, group)
+data_summary(chaff, mass, sex)
+
+# the double brackets allow you to indirectly refer to "group" and "measure" in any data frame ("df") which will have different names for group and measure, which you have defined in the data_summary(chaff, mass,sex). 
+# You would be able to use data_summary on a number of dataframes which had a measure for you to summarise by group
 ```
+
+
 
 
 ## **Discussion**
