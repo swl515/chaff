@@ -23,6 +23,8 @@ Hello this is my introduction
 ## **Methods**
 Hello this is my methods
 
+## **Results**
+
 ```{r}
 # import and tidy the data
 
@@ -34,8 +36,41 @@ chaff <- chaff%>%
                cols = everything())
 ```
 
+<!-- add a code chunk to create a function for the SS(x) of the mass values which you call sum_sq(chaff$mass) -->
+```{r}
 
-## **Results**
+sum_sq <- function(df, measure) {
+  df %>% summarise(ss = sum(({{measure}} - mean({{measure}}))^2))
+}
+
+sum_sq(chaff, mass)
+
+
+
+# adapt the function to calculate the SS(x) of each group
+
+sum_sq <- function(df, measure, group) {
+  df %>% group_by({{ group }}) %>% 
+    summarise(ss = sum(({{measure}} - mean({{measure}}))^2))
+}
+
+sum_sq(chaff, mass, sex)
+```
+
+<!-- add a code chunk to summarize the masses by sex- induce the mean, standard deviation, sample size and standard error -->
+<!-- create a function called data_summary -->
+
+```{r}
+data_summary <- function(df, measure, group) { chaff %>% group_by(sex) %>%
+  summarise(mean = mean(mass),
+            n = length(sex),
+            sdev = sd(mass),
+            serror = sdev/sqrt(n))
+}
+
+data_summary(df, measure, group)
+```
+
 
 ## **Discussion**
 
