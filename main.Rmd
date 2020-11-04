@@ -58,6 +58,17 @@ sum_sq(chaff, mass, sex)
 ```
 
 <!-- add a code chunk to summarize the masses by sex- induce the mean, standard deviation, sample size and standard error -->
+```{r}
+summary <- chaff %>% group_by(sex) %>%
+  summarise(mean = mean(mass),
+            n = length(sex),
+            sdev = sd(mass),
+            serror = sdev/sqrt(n))
+summary
+```
+
+
+
 <!-- create a function called data_summary -->
 
 ```{r}
